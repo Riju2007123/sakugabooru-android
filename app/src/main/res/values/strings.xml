@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SakugaBooru</string>
+    <string name="login">Login</string>
+    <string name="no_posts">No posts found</string>
+    <string name="no_favorites">No favorites yet</string>
+    <string name="retry">Retry</string>
+    <string name="search_hint">Search tags…</string>
+</resources>
