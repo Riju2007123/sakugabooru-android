@@ -12,6 +12,7 @@ import com.sakuga.app.data.local.entity.toEntity
 import com.sakuga.app.domain.model.Post
 import com.sakuga.app.domain.model.Tag
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -58,7 +59,7 @@ class SakugaRepository @Inject constructor(
     // Version that injects auth + favorite state
     suspend fun getPostStreamAuthenticated(tags: String = ""): Flow<PagingData<Post>> {
         val auth = authManager.authState.first()
-        val favIds = favoriteDao.getAllFavoriteIds().first()
+        val favIds = favoriteDao.getAllFavoriteIdsList().map { it.toSet() }.first()
         return Pager(
             config = PagingConfig(pageSize = PAGE_SIZE, enablePlaceholders = false),
             pagingSourceFactory = {
@@ -122,7 +123,7 @@ class SakugaRepository @Inject constructor(
         favoriteDao.getAllFavorites().map { list -> list.map { it.toDomain() } }
 
     fun getFavoriteIds(): Flow<Set<Int>> =
-        favoriteDao.getAllFavoriteIds()
+        favoriteDao.getAllFavoriteIdsList().map { it.toSet() }
 
     suspend fun toggleFavorite(post: Post) {
         if (favoriteDao.isFavorited(post.id)) {
